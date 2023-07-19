@@ -23,7 +23,9 @@ assert layer_id < len(model)
 weights = model[layer_id]._parameters["weight"].data
 bias = model[layer_id]._parameters["bias"].data
 
-weight_grid = tv.utils.make_grid(weights, nrow=8, padding=2, scale_each=scale_each)
+weight_grid = tv.utils.make_grid(
+    weights, nrow=8, padding=2, scale_each=scale_each, pad_value=float("NaN")
+)
 
 v_max_abs = torch.abs(weight_grid[0, ...]).max()
 
