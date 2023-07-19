@@ -3,10 +3,10 @@ from scipy.stats import fisher_exact
 
 def fisher_excat_upper(
     correct_pattern_count: int, number_of_pattern: int, p_threshold: float = 5.0 / 100.0
-) -> float | None:
+) -> float:
     error_pattern_count = int(number_of_pattern - correct_pattern_count)
 
-    bound = None
+    bound = 100.0
     for u in range(0, correct_pattern_count):
         z = int(error_pattern_count + u)
         _, pvalue = fisher_exact(
@@ -22,10 +22,10 @@ def fisher_excat_upper(
 
 def fisher_excat_lower(
     correct_pattern_count: int, number_of_pattern: int, p_threshold: float = 5.0 / 100.0
-) -> float | None:
+) -> float:
     error_pattern_count = int(number_of_pattern - correct_pattern_count)
 
-    bound = None
+    bound = 0.0
     for u in range(0, error_pattern_count):
         z = int(error_pattern_count - u)
         _, pvalue = fisher_exact(
