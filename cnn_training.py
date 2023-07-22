@@ -74,6 +74,7 @@ def main(
         data_path=str(config["data_path"]),
         pooling_type=str(config["pooling_type"]),
         conv_0_enable_softmax=bool(config["conv_0_enable_softmax"]),
+        conv_0_power_softmax=float(config["conv_0_power_softmax"]),
         scale_data=int(config["scale_data"]),
         use_scheduler=bool(config["use_scheduler"]),
         use_adam=bool(config["use_adam"]),
@@ -116,6 +117,7 @@ def run_network(
     data_path: str,
     pooling_type: str,
     conv_0_enable_softmax: bool,
+    conv_0_power_softmax: float,
     scale_data: float,
     use_scheduler: bool,
     use_adam: bool,
@@ -228,6 +230,7 @@ def run_network(
         assert len(filename_list) > 0
         model_filename: str = filename_list[-1]
         logger.info(f"Load filename: {model_filename}")
+        model = torch.load(model_filename, map_location=device)
     else:
         model = make_cnn(
             conv_out_channels_list=out_channels,
@@ -242,9 +245,8 @@ def run_network(
             pooling_type=pooling_type,
             conv_0_enable_softmax=conv_0_enable_softmax,
             l_relu_negative_slope=leak_relu_negative_slope,
+            conv_0_power_softmax=conv_0_power_softmax,
         ).to(device)
-
-    model = torch.load(model_filename, map_location=device)
 
     logger.info(model)
 

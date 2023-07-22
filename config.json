@@ -27,10 +27,11 @@
     "scheduler_patience": 100, // (10)
     "scheduler_threshold": 1e-5, // (1e-4)
     "minimum_learning_rate": 1e-10,
-    "learning_rate": 1e-5,
+    "learning_rate": 1e-3,
     // <- LR Scheduler
     "pooling_type": "max", // (max), average, none
     "conv_0_enable_softmax": true, // true, (false)
+    "conv_0_power_softmax": 2.0, // 0.0 = Exp
     "use_adam": true, // (true) => adam, false => SGD
     "condition": "Coignless",
     "scale_data": 255.0, // (255.0)
