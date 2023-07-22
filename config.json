@@ -1,10 +1,11 @@
 {
     "data_path": "/home/kk/Documents/Semester4/code/RenderStimuli/Output/",
+    "model_continue": false, // true, (false)
     "save_logging_messages": true, // (true), false
     "display_logging_messages": true, // (true), false
     "batch_size_train": 250,
     "batch_size_test": 500,
-    "max_epochs": 2000,
+    "max_epochs": 5000,
     "save_model": true,
     "conv_0_kernel_size": 11,
     "mp_1_kernel_size": 3,
@@ -22,14 +23,14 @@
     // LR Scheduler ->
     "use_scheduler": true, // (true), false
     "scheduler_verbose": true,
-    "scheduler_factor": 0.1, //(0.1)
-    "scheduler_patience": 10, // (10)
+    "scheduler_factor": 0.025, //(0.1)
+    "scheduler_patience": 100, // (10)
     "scheduler_threshold": 1e-5, // (1e-4)
-    "minimum_learning_rate": 1e-8,
-    "learning_rate": 0.0001,
+    "minimum_learning_rate": 1e-10,
+    "learning_rate": 1e-5,
     // <- LR Scheduler
     "pooling_type": "max", // (max), average, none
-    "conv_0_enable_softmax": false, // true, (false)
+    "conv_0_enable_softmax": true, // true, (false)
     "use_adam": true, // (true) => adam, false => SGD
     "condition": "Coignless",
     "scale_data": 255.0, // (255.0)
@@ -48,5 +49,9 @@
     ],
     "conv_stride_sizes": [
         1
-    ]
+    ],
+    "initial_model_path": "initial_models",
+    "tb_runs_path": "tb_runs",
+    "trained_models_path": "trained_models",
+    "performance_data_path": "performance_data"
 }

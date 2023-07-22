@@ -5,7 +5,9 @@ import argh
 import time
 import os
 import json
+import glob
 from jsmin import jsmin
+from natsort import natsorted
 
 from functions.alicorn_data_loader import alicorn_data_loader
 from functions.train import train
@@ -81,6 +83,11 @@ def main(
         scheduler_factor=float(config["scheduler_factor"]),
         precision_100_percent=int(config["precision_100_percent"]),
         scheduler_threshold=float(config["scheduler_threshold"]),
+        model_continue=bool(config["model_continue"]),
+        initial_model_path=str(config["initial_model_path"]),
+        tb_runs_path=str(config["tb_runs_path"]),
+        trained_models_path=str(config["trained_models_path"]),
+        performance_data_path=str(config["performance_data_path"]),
     )
 
 
@@ -118,6 +125,11 @@ def run_network(
     scheduler_factor: float,
     precision_100_percent: int,
     scheduler_threshold: float,
+    model_continue: bool,
+    initial_model_path: str,
+    tb_runs_path: str,
+    trained_models_path: str,
+    performance_data_path: str,
 ) -> None:
     # define device:
     device_str: str = "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -189,8 +201,9 @@ def run_network(
     current = datetime.datetime.now().strftime("%d%m-%H%M")
 
     # new tb session
-    os.makedirs("tb_runs", exist_ok=True)
-    path: str = os.path.join("tb_runs", f"{model_name}")
+
+    os.makedirs(tb_runs_path, exist_ok=True)
+    path: str = os.path.join(tb_runs_path, f"{model_name}")
     tb = SummaryWriter(path)
 
     # --------------------------------------------------------------------------
@@ -208,20 +221,30 @@ def run_network(
     logger.info(f"Pooling layer kernel: {mp_1_kernel_size}, stride: {mp_1_stride}")
 
     # define model:
-    model = make_cnn(
-        conv_out_channels_list=out_channels,
-        conv_kernel_size=kernel_size,
-        conv_stride_size=stride,
-        conv_activation_function=activation_function,
-        train_conv_0=train_first_layer,
-        conv_0_kernel_size=conv_0_kernel_size,
-        mp_1_kernel_size=mp_1_kernel_size,
-        mp_1_stride=mp_1_stride,
-        logger=logger,
-        pooling_type=pooling_type,
-        conv_0_enable_softmax=conv_0_enable_softmax,
-        l_relu_negative_slope=leak_relu_negative_slope,
-    ).to(device)
+    if model_continue:
+        filename_list: list = natsorted(
+            glob.glob(os.path.join(initial_model_path, str("*.pt")))
+        )
+        assert len(filename_list) > 0
+        model_filename: str = filename_list[-1]
+        logger.info(f"Load filename: {model_filename}")
+    else:
+        model = make_cnn(
+            conv_out_channels_list=out_channels,
+            conv_kernel_size=kernel_size,
+            conv_stride_size=stride,
+            conv_activation_function=activation_function,
+            train_conv_0=train_first_layer,
+            conv_0_kernel_size=conv_0_kernel_size,
+            mp_1_kernel_size=mp_1_kernel_size,
+            mp_1_stride=mp_1_stride,
+            logger=logger,
+            pooling_type=pooling_type,
+            conv_0_enable_softmax=conv_0_enable_softmax,
+            l_relu_negative_slope=leak_relu_negative_slope,
+        ).to(device)
+
+    model = torch.load(model_filename, map_location=device)
 
     logger.info(model)
 
@@ -321,11 +344,12 @@ def run_network(
             pt_filename: str = f"{model_name}_{epoch}Epoch_{current}.pt"
             logger.info("")
             logger.info(f"Saved model: {pt_filename}")
-            os.makedirs("trained_models", exist_ok=True)
+
+            os.makedirs(trained_models_path, exist_ok=True)
             torch.save(
                 model,
                 os.path.join(
-                    "trained_models",
+                    trained_models_path,
                     pt_filename,
                 ),
             )
@@ -370,9 +394,9 @@ def run_network(
             save_name=model_name,
         )
 
-    os.makedirs("performance_data", exist_ok=True)
+    os.makedirs(performance_data_path, exist_ok=True)
     np.savez(
-        os.path.join("performance_data", f"performances_{model_name}.npz"),
+        os.path.join(performance_data_path, f"performances_{model_name}.npz"),
         train_accuracy=np.array(train_accuracy),
         test_accuracy=np.array(test_accuracy),
         train_losses=np.array(train_losses),
@@ -386,11 +410,11 @@ def run_network(
     logger.info("")
     logger.info(f"Saved model: {model_name}_{epoch}Epoch_{current}")
     if save_model:
-        os.makedirs("trained_models", exist_ok=True)
+        os.makedirs(trained_models_path, exist_ok=True)
         torch.save(
             model,
             os.path.join(
-                "trained_models",
+                trained_models_path,
                 f"{model_name}_{epoch}Epoch_{current}.pt",
             ),
         )
