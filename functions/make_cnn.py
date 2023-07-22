@@ -60,10 +60,11 @@ def make_cnn(
     assert setting_understood
 
     if conv_0_enable_softmax:
-        if conv_0_power_softmax != 0.0:
-            cnn.append(SoftmaxPower(dim=1, power=conv_0_power_softmax))
-        else:
-            cnn.append(torch.nn.Softmax(dim=1))
+#        if conv_0_power_softmax != 0.0:
+#            cnn.append(SoftmaxPower(dim=1, power=conv_0_power_softmax))
+#        else:
+#            cnn.append(torch.nn.Softmax(dim=1))
+        cnn.append(SoftmaxPower(dim=1, power=conv_0_power_softmax))
 
     # Changing structure
     for i in range(1, len(conv_out_channels_list)):

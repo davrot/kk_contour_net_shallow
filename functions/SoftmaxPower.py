@@ -23,7 +23,7 @@ class SoftmaxPower(torch.nn.Module):
             output = output / output.sum()
         else:
             output = output / output.sum(dim=self.dim, keepdim=True)
-        return output
+        return input * output
 
     def extra_repr(self) -> str:
         return f"dim={self.dim} ; power={self.power}"
