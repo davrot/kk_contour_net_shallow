@@ -32,9 +32,6 @@ def make_cnn(
         )
     )
 
-    if conv_0_enable_softmax:
-        cnn.append(torch.nn.Softmax(dim=1))
-
     setting_understood: bool = False
     if conv_activation_function.upper() == str("relu").upper():
         cnn.append(torch.nn.ReLU())
@@ -59,6 +56,9 @@ def make_cnn(
     elif pooling_type.upper() == str("none").upper():
         setting_understood = True
     assert setting_understood
+
+    if conv_0_enable_softmax:
+        cnn.append(torch.nn.Softmax(dim=1))
 
     # Changing structure
     for i in range(1, len(conv_out_channels_list)):

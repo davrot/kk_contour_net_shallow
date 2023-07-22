@@ -8,8 +8,8 @@ def alicorn_data_loader(
     num_pfinkel: list[int] | None,
     load_stimuli_per_pfinkel: int,
     condition: str,
+    logger,
     data_path: str,
-    logger=None,
 ) -> torch.utils.data.TensorDataset:
     """
     - num_pfinkel: list of the angles that should be loaded (ranging from
