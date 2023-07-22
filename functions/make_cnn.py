@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+from functions.SoftmaxPower import SoftmaxPower
 
 
 def make_cnn(
@@ -14,6 +15,7 @@ def make_cnn(
     mp_1_stride: int,
     pooling_type: str,
     conv_0_enable_softmax: bool,
+    conv_0_power_softmax: float,
     l_relu_negative_slope: float,
 ) -> torch.nn.Sequential:
     assert len(conv_out_channels_list) >= 1
@@ -58,7 +60,10 @@ def make_cnn(
     assert setting_understood
 
     if conv_0_enable_softmax:
-        cnn.append(torch.nn.Softmax(dim=1))
+        if conv_0_power_softmax != 0.0:
+            cnn.append(SoftmaxPower(dim=1, power=conv_0_power_softmax))
+        else:
+            cnn.append(torch.nn.Softmax(dim=1))
 
     # Changing structure
     for i in range(1, len(conv_out_channels_list)):
