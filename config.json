@@ -29,10 +29,15 @@
     "minimum_learning_rate": 1e-10,
     "learning_rate": 1e-4,
     // <- LR Scheduler
+    // type of pooling layer ->
     "pooling_type": "max", // (max), average, none
+    // <- type of pooling layer 
+    // convolution layer 0 softmax parameters ->
     "conv_0_enable_softmax": true, // true, (false)
     "conv_0_power_softmax": 0.0, // (0.0) = Exp
     "conv_0_meanmode_softmax": false, // true, false
+    "conv_0_no_input_mode_softmax": false, // true, (false)
+    // <- convolution layer 0 softmax parameters
     "use_adam": true, // (true) => adam, false => SGD
     "condition": "Coignless",
     "scale_data": 255.0, // (255.0)
