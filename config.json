@@ -1,49 +1,57 @@
 {
-    "data_path": "/home/kk/Documents/Semester4/code/RenderStimuli/Output/",
     "model_continue": false, // true, (false)
-    "save_logging_messages": true, // (true), false
-    "display_logging_messages": true, // (true), false
+    "max_epochs": 5000,
     "batch_size_train": 250,
     "batch_size_test": 500,
-    "max_epochs": 5000,
-    "save_model": true,
-    "conv_0_kernel_size": 11,
-    "mp_1_kernel_size": 3,
-    "mp_1_stride": 2,
-    "use_plot_intermediate": false, // true, (false)
+
+    // data source ->
+    "data_path": "/home/kk/Documents/Semester4/code/RenderStimuli/Output/",
     "stimuli_per_pfinkel": 30000,
     "num_pfinkel_start": 0,
     "num_pfinkel_stop": 10,
     "num_pfinkel_step": 10,
-    "precision_100_percent": 4, // (4)
-    "train_first_layer": true, // true, (false)
-    "save_ever_x_epochs": 10, // (10)
-    "activation_function": "leaky relu", // tanh, relu, (leaky relu), none
-    "leak_relu_negative_slope": 0.1, // (0.1)
+    "condition": "Coignless",
+    "scale_data": 255.0, // (255.0)
+    // <- data source 
+
+    // optimizer ->
+    "use_adam": true, // (true) => adam, false => SGD
+    // <- optimizer 
+
     // LR Scheduler ->
     "use_scheduler": true, // (true), false
     "scheduler_verbose": true,
     "scheduler_factor": 0.025, //(0.1)
-    "scheduler_patience": 100, // (10)
-    "scheduler_threshold": 1e-5, // (1e-4)
+    "scheduler_patience": 10, // (10)
+    "scheduler_threshold": 1e-5, // (1e-5)
     "minimum_learning_rate": 1e-10,
     "learning_rate": 1e-4,
     // <- LR Scheduler
-    // type of pooling layer ->
+
+    // pooling layer ->
     "pooling_type": "max", // (max), average, none
-    // <- type of pooling layer 
+    // <- pooling layer 
+
+    // activation function ->
+    "activation_function": "leaky relu", // tanh, relu, (leaky relu), none
+    "leak_relu_negative_slope": 0.1, // (0.1)
+    // <- activation function
+
     // convolution layer 0 softmax parameters ->
-    "conv_0_enable_softmax": true, // true, (false)
-    "conv_0_power_softmax": 0.0, // (0.0) = Exp
-    "conv_0_meanmode_softmax": false, // true, false
+    "conv_0_enable_softmax": false, // true, (false)
+    "conv_0_power_softmax": 4.0, // (0.0) = Exp
+    "conv_0_meanmode_softmax": true, // true, false
     "conv_0_no_input_mode_softmax": false, // true, (false)
     // <- convolution layer 0 softmax parameters
-    "use_adam": true, // (true) => adam, false => SGD
-    "condition": "Coignless",
-    "scale_data": 255.0, // (255.0)
+
+    // network definion -> 
+    "train_first_layer": true, // true, (false)
+    "mp_1_kernel_size": 3,
+    "mp_1_stride": 2,
+    "conv_0_kernel_size": 11,
     "conv_out_channels_list": [
         [
-            32,
+            8,
             8,
             8
         ]
@@ -57,8 +65,24 @@
     "conv_stride_sizes": [
         1
     ],
+    // <- network definion 
+
+    // logging -> 
+    "save_logging_messages": true, // (true), false
+    "display_logging_messages": true, // (true), false
+    // <- logging 
+
+    // saving the model and co ->
+    "save_model": true,
+    "use_plot_intermediate": false, // true, (false)
+    "precision_100_percent": 4, // (4)
+    "save_ever_x_epochs": 10, // (10)
+    // <- saving the model and co
+
+    // path definitions ->
     "initial_model_path": "initial_models",
     "tb_runs_path": "tb_runs",
     "trained_models_path": "trained_models",
     "performance_data_path": "performance_data"
+    // <- path definitions 
 }
