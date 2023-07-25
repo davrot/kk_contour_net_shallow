@@ -50,6 +50,16 @@ def make_cnn(
         setting_understood = True
     assert setting_understood
 
+    if conv_0_enable_softmax:
+        cnn.append(
+            SoftmaxPower(
+                dim=1,
+                power=conv_0_power_softmax,
+                mean_mode=conv_0_meanmode_softmax,
+                no_input_mode=conv_0_no_input_mode_softmax,
+            )
+        )
+
     setting_understood = False
     if pooling_type.upper() == str("max").upper():
         cnn.append(torch.nn.MaxPool2d(kernel_size=mp_1_kernel_size, stride=mp_1_stride))
@@ -61,15 +71,6 @@ def make_cnn(
         setting_understood = True
     assert setting_understood
 
-    if conv_0_enable_softmax:
-        cnn.append(
-            SoftmaxPower(
-                dim=1,
-                power=conv_0_power_softmax,
-                mean_mode=conv_0_meanmode_softmax,
-                no_input_mode=conv_0_no_input_mode_softmax,
-            )
-        )
 
     # Changing structure
     for i in range(1, len(conv_out_channels_list)):
