@@ -6,8 +6,8 @@
     ],
     "conv_kernel_size": [
         11,
-        7,
-        15
+        11,
+        11
     ],
     "conv_stride_size": [
         1,
@@ -30,14 +30,14 @@
     "l_relu_negative_slope": 0.1, // (0.1)
     // Pooling layer -----------------------------------------------------------
     "pooling_kernel_size": [
-        3,
-        0,
-        0
+        5,
+        5,
+        5
     ],
     "pooling_stride": [
         2,
-        0,
-        0
+        2,
+        2
     ],
     "pooling_type": "max", // (max), average, none
     // Softmax layer -----------------------------------------------------------

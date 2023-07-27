@@ -4,12 +4,13 @@ import matplotlib.pyplot as plt
 import os
 import glob
 from natsort import natsorted
+import sys
 
 # import numpy as np
 
-layer_id: int = 3
-scale_each_inner: bool = False
-scale_each_outer: bool = False
+layer_id: int = int(sys.argv[1])
+scale_each_inner: bool = True
+scale_each_outer: bool = True
 
 model_path: str = "trained_models"
 filename_list: list = natsorted(glob.glob(os.path.join(model_path, str("*.pt"))))
@@ -47,12 +48,12 @@ v_max_abs = torch.abs(weight_grid[0, ...]).max()
 plt.subplot(3, 1, (1, 2))
 plt.imshow(
     weight_grid[0, ...],
-    vmin=-v_max_abs,
-    vmax=v_max_abs,
-    cmap="cool",
+#    vmin=-v_max_abs,
+#    vmax=v_max_abs,
+    cmap="hot",
 )
 plt.axis("off")
-plt.colorbar()
+#plt.colorbar()
 plt.title("Weights")
 
 plt.subplot(3, 1, 3)
