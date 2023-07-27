@@ -1,0 +1,43 @@
+{
+    "model_continue": false, // true, (false)
+    "max_epochs": 5000,
+    "batch_size_train": 250,
+    "batch_size_test": 500,
+    // data source ->
+    "data_path": "/home/kk/Documents/Semester4/code/RenderStimuli/Output/",
+    "stimuli_per_pfinkel": 30000,
+    "num_pfinkel_start": 0,
+    "num_pfinkel_stop": 10,
+    "num_pfinkel_step": 10,
+    "condition": "Coignless",
+    "scale_data": 255.0, // (255.0)
+    // <- data source 
+    // optimizer ->
+    "use_adam": true, // (true) => adam, false => SGD
+    // <- optimizer 
+    // LR Scheduler ->
+    "use_scheduler": true, // (true), false
+    "scheduler_verbose": true,
+    "scheduler_factor": 0.025, //(0.1)
+    "scheduler_patience": 10, // (10)
+    "scheduler_threshold": 1e-5, // (1e-5)
+    "minimum_learning_rate": 1e-10,
+    "learning_rate": 1e-4,
+    // <- LR Scheduler
+    // logging -> 
+    "save_logging_messages": true, // (true), false
+    "display_logging_messages": true, // (true), false
+    // <- logging 
+    // saving the model and co ->
+    "save_model": true,
+    "use_plot_intermediate": false, // true, (false)
+    "precision_100_percent": 4, // (4)
+    "save_ever_x_epochs": 10, // (10)
+    // <- saving the model and co
+    // path definitions ->
+    "initial_model_path": "initial_models",
+    "tb_runs_path": "tb_runs",
+    "trained_models_path": "trained_models",
+    "performance_data_path": "performance_data"
+    // <- path definitions 
+}

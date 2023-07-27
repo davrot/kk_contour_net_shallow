@@ -1,0 +1,68 @@
+{ // Convolution layer ---------------------------------------------------------
+    "conv_out_channel": [
+        32,
+        8,
+        8
+    ],
+    "conv_kernel_size": [
+        11,
+        7,
+        15
+    ],
+    "conv_stride_size": [
+        1,
+        1,
+        1
+    ],
+    "conv_bias": [ // Warning: One more for the output layer
+        true,
+        true,
+        true,
+        true
+    ],
+    "conv_padding": [
+        0,
+        0,
+        0
+    ],
+    // Activation function -----------------------------------------------------
+    "activation_function": "leaky relu", // tanh, relu, (leaky relu), none
+    "l_relu_negative_slope": 0.1, // (0.1)
+    // Pooling layer -----------------------------------------------------------
+    "pooling_kernel_size": [
+        3,
+        0,
+        0
+    ],
+    "pooling_stride": [
+        2,
+        0,
+        0
+    ],
+    "pooling_type": "max", // (max), average, none
+    // Softmax layer -----------------------------------------------------------
+    "softmax_enable": [
+        false,
+        false,
+        false
+    ],
+    "softmax_power": 0.0, // (0.0) = Exp
+    "softmax_meanmode": true, // true, false
+    "softmax_no_input_mode": false, // true, (false)
+    // Load pre-trained weights and biases -------------------------------------
+    "path_pretrained_weights_bias": "",
+    "train_weights": [ // Warning: One more for the output layer
+        true,
+        true,
+        true,
+        true
+    ],
+    "train_bias": [ // Warning: One more for the output layer
+        true,
+        true,
+        true,
+        true
+    ],
+    // Output layer ------------------------------------------------------------
+    "number_of_classes": 2
+}
