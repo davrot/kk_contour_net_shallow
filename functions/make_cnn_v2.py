@@ -225,7 +225,7 @@ def make_cnn(
             temp_image = cnn[layer_counter](temp_image)
             logger.info(
                 (
-                    f"After layer {layer_counter}: {int(temp_image.shape[1])}, "
+                    f"After layer {layer_counter} (Softmax Power Layer): {int(temp_image.shape[1])}, "
                     f"{int(temp_image.shape[2])}, "
                     f"{int(temp_image.shape[3])}, "
                     f"train bias: {cnn[-1].train_bias}, "
