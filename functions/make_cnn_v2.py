@@ -174,6 +174,31 @@ def make_cnn(
         )
         layer_counter += 1
 
+        if softmax_enable[i]:
+            cnn.append(
+                SoftmaxPower(
+                    dim=1,
+                    power=float(softmax_power),
+                    mean_mode=bool(softmax_meanmode),
+                    no_input_mode=bool(softmax_no_input_mode),
+                )
+            )
+
+            cnn[-1].train_bias = False
+            cnn[-1].train_weights = False
+
+            temp_image = cnn[layer_counter](temp_image)
+            logger.info(
+                (
+                    f"After layer {layer_counter} (Softmax Power Layer): {int(temp_image.shape[1])}, "
+                    f"{int(temp_image.shape[2])}, "
+                    f"{int(temp_image.shape[3])}, "
+                    f"train bias: {cnn[-1].train_bias}, "
+                    f"train weights: {cnn[-1].train_weights} "
+                )
+            )
+            layer_counter += 1
+
         if (pooling_kernel_size[i] > 0) and (pooling_stride[i] > 0):
             setting_understood = False
             if pooling_type.upper() == str("max").upper():
@@ -209,30 +234,6 @@ def make_cnn(
             )
             layer_counter += 1
 
-        if softmax_enable[i]:
-            cnn.append(
-                SoftmaxPower(
-                    dim=1,
-                    power=float(softmax_power),
-                    mean_mode=bool(softmax_meanmode),
-                    no_input_mode=bool(softmax_no_input_mode),
-                )
-            )
-
-            cnn[-1].train_bias = False
-            cnn[-1].train_weights = False
-
-            temp_image = cnn[layer_counter](temp_image)
-            logger.info(
-                (
-                    f"After layer {layer_counter} (Softmax Power Layer): {int(temp_image.shape[1])}, "
-                    f"{int(temp_image.shape[2])}, "
-                    f"{int(temp_image.shape[3])}, "
-                    f"train bias: {cnn[-1].train_bias}, "
-                    f"train weights: {cnn[-1].train_weights} "
-                )
-            )
-            layer_counter += 1
 
     # Output layer
     cnn.append(
