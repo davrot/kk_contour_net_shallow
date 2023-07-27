@@ -27,6 +27,9 @@ def test(
             image /= scale_data
 
         output = model(image)
+        if output.ndim == 4:
+            output = output.squeeze(-1).squeeze(-1)
+        assert output.ndim == 2
 
         # loss and optimization
         loss = torch.nn.functional.cross_entropy(output, label, reduction="sum")

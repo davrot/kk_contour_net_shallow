@@ -30,6 +30,10 @@ def train(
 
         optimizer.zero_grad()
         output = model(image)
+        if output.ndim == 4:
+            output = output.squeeze(-1).squeeze(-1)
+        assert output.ndim == 2
+
         loss = torch.nn.functional.cross_entropy(output, label, reduction="sum")
         loss.backward()
 
