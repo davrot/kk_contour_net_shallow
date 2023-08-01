@@ -13,7 +13,7 @@ from functions.make_cnn import make_cnn  # noqa
 device = torch.device("cpu")
 
 # path to NN
-nn = "ArghCNN_numConvLayers3_outChannels[6, 8, 8]_kernelSize[7, 15]_leaky relu_stride1_trainFirstConvLayerTrue_seed287302_Coignless_801Epoch_2807-0857.pt"
+nn = "ArghCNN_numConvLayers3_outChannels[3, 8, 8]_kernelSize[7, 15]_leaky relu_stride1_trainFirstConvLayerTrue_seed290415_Coignless_1307Epoch_3107-0912.pt"
 PATH = f"../trained_models/{nn}"
 
 # load and evaluate model

@@ -29,8 +29,11 @@ def main(
 ) -> None:
     config_filenname = "config.json"
     with open(config_filenname, "r") as file_handle:
-        config = json.loads(jsmin(file_handle.read()))
-    
+        file_contents = file_handle.read()
+        f_contents = jsmin(file_contents)
+        config = json.loads(f_contents)
+        # config = json.loads(jsmin(file_handle.read()))
+
     # get model information:
     output_channels = config["conv_out_channels_list"][idx_conv_out_channels_list]
 
@@ -81,6 +84,7 @@ def main(
         use_adam=bool(config["use_adam"]),
         use_plot_intermediate=bool(config["use_plot_intermediate"]),
         leak_relu_negative_slope=float(config["leak_relu_negative_slope"]),
+        switch_leakyR_to_relu=bool(config["switch_leakyR_to_relu"]),
         scheduler_verbose=bool(config["scheduler_verbose"]),
         scheduler_factor=float(config["scheduler_factor"]),
         precision_100_percent=int(config["precision_100_percent"]),
@@ -118,6 +122,7 @@ def run_network(
     use_adam: bool,
     use_plot_intermediate: bool,
     leak_relu_negative_slope: float,
+    switch_leakyR_to_relu: bool,
     scheduler_verbose: bool,
     scheduler_factor: float,
     precision_100_percent: int,
@@ -128,6 +133,9 @@ def run_network(
     logger.info(f"Using {device_str} device")
     device: torch.device = torch.device(device_str)
     torch.set_default_dtype(torch.float32)
+
+    # switch to relu if using leaky relu
+    switched_to_relu: bool = False
 
     # -------------------------------------------------------------------
     logger.info("-==- START -==-")
@@ -362,8 +370,19 @@ def run_network(
 
         # stop learning: done
         if round(previous_test_acc, precision_100_percent) == 100.0:
-            logger.info("100% test performance reached. Stop training.")
-            break
+            if activation_function == "leaky relu":
+                if switch_leakyR_to_relu and not switched_to_relu:
+                    logger.info(
+                        "100% test performance reached. Switching to LeakyReLU slope 0.0."
+                    )
+                    for name, module in model.named_children():
+                        if isinstance(module, torch.nn.LeakyReLU):
+                            module.negative_slope = 0.0
+                    logger.info(model)
+                    switched_to_relu = True
+            else:
+                logger.info("100% test performance reached. Stop training.")
+                break
 
     if use_plot_intermediate:
         plot_intermediate(

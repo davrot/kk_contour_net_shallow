@@ -132,7 +132,7 @@ if __name__ == "__main__":
     )
     assert selection_file_id < len(list_filenames)
     # model_filename: str = str(list_filenames[selection_file_id])
-    model_filename: str = "./trained_models/ArghCNN_numConvLayers3_outChannels[6, 8, 8]_kernelSize[7, 15]_leaky relu_stride1_trainFirstConvLayerTrue_seed287302_Coignless_801Epoch_2807-0857.pt"
+    model_filename: str = "./trained_models/ArghCNN_numConvLayers3_outChannels[3, 8, 8]_kernelSize[7, 15]_leaky relu_stride1_trainFirstConvLayerTrue_seed290415_Coignless_1307Epoch_3107-0912.pt"
     logger.info(f"Using model file: {model_filename}")
 
     # shorter saving name:

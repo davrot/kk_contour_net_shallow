@@ -19,6 +19,7 @@
     "save_ever_x_epochs": 10, // (10)
     "activation_function": "leaky relu", // tanh, relu, (leaky relu), none
     "leak_relu_negative_slope": 0.1, // (0.1)
+    "switch_leakyR_to_relu": true,
     // LR Scheduler ->
     "use_scheduler": true, // (true), false
     "scheduler_verbose": true,
@@ -35,10 +36,40 @@
     "scale_data": 255.0, // (255.0),
     "conv_out_channels_list": [
         [
+            32,
+            8,
+            8
+        ],  
+        [
+            8,
+            8,
+            8
+        ], 
+        [
+            6,
+            8,
+            8
+        ], 
+        [
+            4,
+            8,
+            8
+        ], 
+        [
             3,
             8,
             8
-        ]
+        ], 
+        [
+            2,
+            8,
+            8
+        ], 
+        [
+            1,
+            8,
+            8
+        ]  
     ],
     "conv_kernel_sizes": [
         [

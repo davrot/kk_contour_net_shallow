@@ -21,7 +21,9 @@ def plot_intermediate(
     assert len(train_accuracy) == len(test_losses)
 
     # legend:
-    pattern = r"(outChannels\[\d+(?:, \d+)*\]_kernelSize\[\d+(?:, \d+)*\]_)(\w+)(?=_stride)"
+    pattern = (
+        r"(outChannels\[\d+(?:, \d+)*\]_kernelSize\[\d+(?:, \d+)*\]_)([^_]+)(?=_stride)"
+    )
     matches = re.findall(pattern, save_name)
     legend_label = "".join(["".join(match) for match in matches])
 
@@ -35,8 +37,8 @@ def plot_intermediate(
     plt.figure(figsize=[12, 7])
     plt.subplot(2, 1, 1)
 
-    plt.plot(x, np.array(train_accuracy), label="Train: " + str(legend_label))
-    plt.plot(x, np.array(test_accuracy), label="Test: " + str(legend_label))
+    plt.plot(x, np.array(train_accuracy), label="Train " + str(legend_label))
+    plt.plot(x, np.array(test_accuracy), label="Test " + str(legend_label))
     plt.title("Training and Testing Accuracy", fontsize=18)
     plt.xlabel("Epoch", fontsize=18)
     plt.ylabel("Accuracy (\\%)", fontsize=18)
@@ -53,8 +55,8 @@ def plot_intermediate(
 
     # losses
     plt.subplot(2, 1, 2)
-    plt.plot(x, np.array(train_losses), label="Train: " + str(legend_label))
-    plt.plot(x, np.array(test_losses), label="Test: " + str(legend_label))
+    plt.plot(x, np.array(train_losses), label="Train " + str(legend_label))
+    plt.plot(x, np.array(test_losses), label="Test " + str(legend_label))
     plt.title("Training and Testing Losses", fontsize=18)
     plt.xlabel("Epoch", fontsize=18)
     plt.ylabel("Loss", fontsize=18)
