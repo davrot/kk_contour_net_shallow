@@ -31,6 +31,7 @@ def main(
     with open(config_filenname, "r") as file_handle:
         file_contents = file_handle.read()
         f_contents = jsmin(file_contents)
+        print(f_contents)
         config = json.loads(f_contents)
         # config = json.loads(jsmin(file_handle.read()))
 
@@ -134,8 +135,11 @@ def run_network(
     device: torch.device = torch.device(device_str)
     torch.set_default_dtype(torch.float32)
 
-    # switch to relu if using leaky relu
+    # switch to relu if using leaky relu (not switched yet)
     switched_to_relu: bool = False
+
+    # get initial leaky slope:
+    leaky_slope = leak_relu_negative_slope
 
     # -------------------------------------------------------------------
     logger.info("-==- START -==-")
@@ -372,14 +376,18 @@ def run_network(
         if round(previous_test_acc, precision_100_percent) == 100.0:
             if activation_function == "leaky relu":
                 if switch_leakyR_to_relu and not switched_to_relu:
+                    leaky_slope /= 10
                     logger.info(
-                        "100% test performance reached. Switching to LeakyReLU slope 0.0."
+                        f"100% test performance reached. Decreasing LeakyReLU slope to {leaky_slope}."
                     )
                     for name, module in model.named_children():
                         if isinstance(module, torch.nn.LeakyReLU):
-                            module.negative_slope = 0.0
+                            module.negative_slope = leaky_slope
                     logger.info(model)
-                    switched_to_relu = True
+
+                    if leaky_slope <= 1e-5:
+                        switched_to_relu = True
+                        activation_function = "relu"
             else:
                 logger.info("100% test performance reached. Stop training.")
                 break
