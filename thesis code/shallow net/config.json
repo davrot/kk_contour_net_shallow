@@ -1,0 +1,53 @@
+{
+    "data_path": "/home/kk/Documents/Semester4/code/RenderStimuli/Output/",
+    "save_logging_messages": true, // (true), false
+    "display_logging_messages": true, // (true), false
+    "batch_size_train": 500,
+    "batch_size_test": 250,
+    "max_epochs": 2000,
+    "save_model": true,
+    "conv_0_kernel_size": 11,
+    "mp_1_kernel_size": 3,
+    "mp_1_stride": 2,
+    "use_plot_intermediate": true, // true, (false)
+    "stimuli_per_pfinkel": 10000,
+    "num_pfinkel_start": 0,
+    "num_pfinkel_stop": 100,
+    "num_pfinkel_step": 10,
+    "precision_100_percent": 0, // (4)
+    "train_first_layer": false, // true, (false)
+    "save_ever_x_epochs": 10, // (10)
+    "activation_function": "leaky relu", // tanh, relu, (leaky relu), none
+    "leak_relu_negative_slope": 0.1, // (0.1)
+    "switch_leakyR_to_relu": false,
+    // LR Scheduler ->
+    "use_scheduler": true, // (true), false
+    "scheduler_verbose": true,
+    "scheduler_factor": 0.1, //(0.1)
+    "scheduler_patience": 10, // (10)
+    "scheduler_threshold": 1e-5, // (1e-4)
+    "minimum_learning_rate": 1e-8,
+    "learning_rate": 0.0001,
+    // <- LR Scheduler
+    "pooling_type": "max", // (max), average, none
+    "conv_0_enable_softmax": false, // true, (false)
+    "use_adam": true, // (true) => adam, false => SGD
+    "condition": "Natural",
+    "scale_data": 255.0, // (255.0)
+    "conv_out_channels_list": [
+        [
+            32,
+            8,
+            8
+        ]
+    ],
+    "conv_kernel_sizes": [
+        [
+            7,
+            15
+        ]
+    ],
+    "conv_stride_sizes": [
+        1
+    ]
+}
